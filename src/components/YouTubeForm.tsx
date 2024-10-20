@@ -1,5 +1,6 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
+import { useEffect } from "react";
 export const YouTubeForm = () => {
   type FormValues = {
     username: string;
@@ -46,6 +47,9 @@ export const YouTubeForm = () => {
     control,
     handleSubmit,
     formState: { errors },
+    watch,
+    getValues,
+    setValue,
   } = form;
 
   const { fields, append, remove } = useFieldArray({
@@ -56,8 +60,44 @@ export const YouTubeForm = () => {
   const onsubmit = (data: FormValues) => {
     console.log(data);
   };
+
+  const handleGetValues = () => {
+    //console.log("getValues", getValues()); //giving entire value of all form field
+    console.log(
+      "getValues",
+      //getValues("social.twitter"), // for single input value
+      getValues(["username", "channel", "social.twitter"])
+    );
+  };
+
+  const handleSetValue = () => {
+    setValue("username", "", {
+      // Programatically set the register field value
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+    setValue("email", "", {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+  };
+
+  // const watchValue = watch(["username", "email"]); // It will render the component each time we change somthing in field
+
+  useEffect(() => {
+    const subscribe = watch((value) => {
+      // This will not re-render each time we change
+      console.log(value);
+    });
+
+    return () => subscribe.unsubscribe();
+  }, [watch]);
+
   return (
     <div>
+      {/* <h1>YouTube Form {watchValue}</h1> */}
       <h1>YouTube Form</h1>
       <form onSubmit={handleSubmit(onsubmit)}>
         <div className="form-control">
@@ -227,7 +267,11 @@ export const YouTubeForm = () => {
           />
           <p className="error">{errors.dob?.message}</p>
         </div>
-        <button>Submit</button>
+        <div className="allBtns">
+          <button type="submit">Submit</button>
+          <button onClick={handleGetValues}>Get Values</button>
+          <button onClick={handleSetValue}>Set Values</button>
+        </div>
       </form>
       <DevTool control={control} />
     </div>
