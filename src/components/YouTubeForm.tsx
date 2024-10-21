@@ -25,7 +25,7 @@ export const YouTubeForm = () => {
         "https://jsonplaceholder.typicode.com/users/1"
       );
       const data = await response.json();
-      console.log(data, "val");
+      // console.log(data, "val");
       return {
         username: "Mithun",
         email: data.email, // can make default value from an api or database
@@ -46,11 +46,15 @@ export const YouTubeForm = () => {
     register,
     control,
     handleSubmit,
-    formState: { errors },
+    formState,
     watch,
     getValues,
     setValue,
   } = form;
+
+  const { errors, touchedFields, dirtyFields, isDirty } = formState;
+
+  console.log(touchedFields, dirtyFields, isDirty, "touch"); // Is touched is for entire form state.
 
   const { fields, append, remove } = useFieldArray({
     name: "phNumbers",
@@ -58,7 +62,7 @@ export const YouTubeForm = () => {
   });
 
   const onsubmit = (data: FormValues) => {
-    console.log(data);
+    // console.log(data);
   };
 
   const handleGetValues = () => {
@@ -89,7 +93,7 @@ export const YouTubeForm = () => {
   useEffect(() => {
     const subscribe = watch((value) => {
       // This will not re-render each time we change
-      console.log(value);
+      // console.log(value);
     });
 
     return () => subscribe.unsubscribe();
@@ -116,7 +120,7 @@ export const YouTubeForm = () => {
         in register is the name attribute value */}
           <p className="error">{errors.username?.message}</p>
         </div>
-        <div>
+        <div className="form-control">
           <label htmlFor="email">E-mail</label>
           <input
             type="email"
