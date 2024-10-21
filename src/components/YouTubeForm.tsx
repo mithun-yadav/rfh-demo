@@ -90,14 +90,14 @@ export const YouTubeForm = () => {
 
   // const watchValue = watch(["username", "email"]); // It will render the component each time we change somthing in field
 
-  useEffect(() => {
-    const subscribe = watch((value) => {
-      // This will not re-render each time we change
-      // console.log(value);
-    });
+  // useEffect(() => {
+  //   const subscribe = watch((value) => {
+  //     //This will not re-render each time we change
+  //     console.log(value);
+  //   });
 
-    return () => subscribe.unsubscribe();
-  }, [watch]);
+  //   return () => subscribe.unsubscribe();
+  // }, [watch]);
 
   return (
     <div>
@@ -170,6 +170,8 @@ export const YouTubeForm = () => {
             type="text"
             id="twitter"
             {...register("social.twitter", {
+              // disabled: true,
+              disabled: watch("channel") !== "", // setting disabled value programmatically
               required: {
                 value: true,
                 message: "Twitter is required",
