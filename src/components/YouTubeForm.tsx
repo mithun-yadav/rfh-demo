@@ -1,4 +1,9 @@
-import { useForm, useFieldArray } from "react-hook-form";
+import {
+  useForm,
+  useFieldArray,
+  FieldError,
+  FieldErrors,
+} from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useEffect } from "react";
 export const YouTubeForm = () => {
@@ -52,9 +57,9 @@ export const YouTubeForm = () => {
     setValue,
   } = form;
 
-  const { errors, touchedFields, dirtyFields, isDirty } = formState;
+  const { errors, touchedFields, dirtyFields, isDirty, isValid } = formState;
 
-  console.log(touchedFields, dirtyFields, isDirty, "touch"); // Is touched is for entire form state.
+  //console.log(touchedFields, dirtyFields, isDirty, "touch"); // Is touched is for entire form state.
 
   const { fields, append, remove } = useFieldArray({
     name: "phNumbers",
@@ -62,7 +67,7 @@ export const YouTubeForm = () => {
   });
 
   const onsubmit = (data: FormValues) => {
-    // console.log(data);
+    console.log(data);
   };
 
   const handleGetValues = () => {
@@ -99,11 +104,15 @@ export const YouTubeForm = () => {
   //   return () => subscribe.unsubscribe();
   // }, [watch]);
 
+  const onError = (errors: FieldErrors<FormValues>) => {
+    console.log("Form Error", errors); // Here is the perfect place to provide custom error messages based non the errors object
+  };
+
   return (
     <div>
       {/* <h1>YouTube Form {watchValue}</h1> */}
       <h1>YouTube Form</h1>
-      <form onSubmit={handleSubmit(onsubmit)}>
+      <form onSubmit={handleSubmit(onsubmit, onError)}>
         <div className="form-control">
           <label htmlFor="username">Username</label>
           <input
@@ -171,7 +180,7 @@ export const YouTubeForm = () => {
             id="twitter"
             {...register("social.twitter", {
               // disabled: true,
-              disabled: watch("channel") !== "", // setting disabled value programmatically
+              //disabled: watch("channel") !== "", // setting disabled value programmatically
               required: {
                 value: true,
                 message: "Twitter is required",
@@ -274,7 +283,11 @@ export const YouTubeForm = () => {
           <p className="error">{errors.dob?.message}</p>
         </div>
         <div className="allBtns">
-          <button type="submit">Submit</button>
+          <button type="submit" disabled={!isDirty && !isValid}>
+            {" "}
+            {/*is valid for checking form validation whether it has error or not*/}
+            Submit
+          </button>
           <button onClick={handleGetValues}>Get Values</button>
           <button onClick={handleSetValue}>Set Values</button>
         </div>
