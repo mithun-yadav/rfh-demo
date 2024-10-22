@@ -55,9 +55,22 @@ export const YouTubeForm = () => {
     watch,
     getValues,
     setValue,
+    reset,
   } = form;
 
-  const { errors, touchedFields, dirtyFields, isDirty, isValid } = formState;
+  const {
+    errors,
+    touchedFields,
+    dirtyFields,
+    isDirty,
+    isValid,
+    isSubmitting,
+    isSubmitted,
+    isSubmitSuccessful,
+    submitCount,
+  } = formState;
+
+  console.log(isSubmitting, isSubmitted, isSubmitSuccessful, submitCount); // form state for tracking form submission event
 
   //console.log(touchedFields, dirtyFields, isDirty, "touch"); // Is touched is for entire form state.
 
@@ -67,8 +80,20 @@ export const YouTubeForm = () => {
   });
 
   const onsubmit = (data: FormValues) => {
+    //reset(); // don't call the reset function it is not recommended rather in successful form submission
     console.log(data);
   };
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      // reset(); // reset entire form
+      reset((formValues) => ({
+        // can reset a particular form field
+        ...formValues,
+        username: "",
+      }));
+    }
+  }, [isSubmitSuccessful, reset]);
 
   const handleGetValues = () => {
     //console.log("getValues", getValues()); //giving entire value of all form field
@@ -283,13 +308,22 @@ export const YouTubeForm = () => {
           <p className="error">{errors.dob?.message}</p>
         </div>
         <div className="allBtns">
-          <button type="submit" disabled={!isDirty && !isValid}>
-            {" "}
-            {/*is valid for checking form validation whether it has error or not*/}
+          {/* <button type="submit">Submit</button> */}
+          <button
+            type="submit"
+            disabled={!isDirty && !isValid && !isSubmitting} // is submitting work for till the form is in phase of the submission
+          >
             Submit
+            {/* is valid for checking form validation whether it has error or not
+            Submit */}
           </button>
           <button onClick={handleGetValues}>Get Values</button>
           <button onClick={handleSetValue}>Set Values</button>
+          <button type="button" onClick={() => reset()}>
+            {" "}
+            {/* reset will bring form values to its initil default state */}
+            Reset
+          </button>
         </div>
       </form>
       <DevTool control={control} />
