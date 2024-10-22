@@ -90,7 +90,7 @@ export const YouTubeForm = () => {
       reset((formValues) => ({
         // can reset a particular form field
         ...formValues,
-        username: "",
+        username: "Asha",
       }));
     }
   }, [isSubmitSuccessful, reset]);
@@ -178,6 +178,14 @@ export const YouTubeForm = () => {
                     !fieldValue.endsWith("baddomain.com") ||
                     "This domain is not supported"
                   );
+                },
+                emailAvailable: async (fieldValue) => {
+                  // async validation in react hook form
+                  const response = await fetch(
+                    `https://jsonplaceholder.typicode.com/users?email=${fieldValue}`
+                  );
+                  const data = await response.json();
+                  return !data?.length || "Email exist try another one";
                 },
               },
             })}
