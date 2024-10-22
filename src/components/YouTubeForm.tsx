@@ -46,6 +46,9 @@ export const YouTubeForm = () => {
         dob: new Date(),
       };
     },
+    //mode: "onSubmit", // When one want validation to occur. By default it is onSubmit
+    //mode: "onBlur", //"onTouched" //"OnChnage" --> This can make performance issues
+    mode: "all", // is for onBlur and onChange event
   });
   const {
     register,
@@ -56,6 +59,7 @@ export const YouTubeForm = () => {
     getValues,
     setValue,
     reset,
+    trigger, // manually trigger validation
   } = form;
 
   const {
@@ -332,6 +336,11 @@ export const YouTubeForm = () => {
             {/* reset will bring form values to its initil default state */}
             Reset
           </button>
+          {/* <button onClick={() => trigger()}>Validate</button> */}
+          <button onClick={() => trigger("channel")}>
+            validate single field
+          </button>{" "}
+          {/*validation for single field */}
         </div>
       </form>
       <DevTool control={control} />
