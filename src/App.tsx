@@ -1,11 +1,13 @@
-import "./App.css";
 import { YouTubeForm } from "./components/YouTubeForm";
-
+import YupYoutubeForm from "./components/YupYoutubeForm";
+import MuiFormComponent from "./components/MuiFormComponent";
 function App() {
   return (
     <>
       <div>
-        <YouTubeForm />
+        {/* <YouTubeForm /> */}
+        {/* <YupYoutubeForm /> */}
+        <MuiFormComponent />
       </div>
     </>
   );
